@@ -5,7 +5,7 @@
 
 #define TAM 5
 
-// structs
+// STRUCTS
 
 struct _no { // similar to Type in ts
     int x;
@@ -25,6 +25,8 @@ retorno criar() {
 
     ponteiro->valor = 10;
     ponteiro->num = 30;
+    (*ponteiro).num = 30;
+    (*ponteiro).valor = 10;
 
     var.num = 30;
     var.valor = 10;
@@ -52,3 +54,6 @@ int main() {
 
     return 0;
 }
+
+// [ ./a < in.txt > saida.txt ] <== way to indicate input and output
+// an extension should be used to compare this files
