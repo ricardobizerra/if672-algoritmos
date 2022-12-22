@@ -10,7 +10,7 @@
 struct _no { // similar to Type in ts
     int x;
     char y;
-    int y;
+    int z;
 };
 
 struct retorno {
@@ -31,10 +31,10 @@ retorno criar() {
     var.num = 30;
     var.valor = 10;
 
-    return ponteiro; // possible way to return 2+ values in one function
+    return *ponteiro; // possible way to return 2+ values in one function
 }
 
-// ** is used to appoint
+// * is used to appoint
 void modifica_array(int **arr, int valor) {
     for(int i=0; i < TAM; i++){
         *(*(arr) + i * sizeof(int)) = valor; // attributing value to x[i]
