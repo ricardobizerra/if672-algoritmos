@@ -28,18 +28,16 @@ void enqueue(fila *arr, string carta_fila){
 }
 
 void printa_fila(fila *arr){
-    cout << "[";
     node_fila *cur = arr->head;
     if (cur == NULL) {
         cout << "";
     } else {
         while (cur != NULL){
-            if(cur != arr->tail) cout << cur->carta_fila << ",";
-            else cout << cur->carta_fila;
+            if(cur != arr->tail) cout << cur->carta_fila << " ";
+            else cout << cur->carta_fila << endl;
             cur = cur->next;
         }
     }
-    cout << "]" << endl;
 }
 
 int main()
@@ -57,7 +55,7 @@ int main()
         array_ponteiros[i] = new fila();
     }
 
-    string cmd, carta;
+    string cmd;
     cin >> cmd;
 
     bool programa_encerrado = false;
@@ -67,31 +65,23 @@ int main()
         if (cmd == "END") {
             programa_encerrado = true;
 
-        } else if (cmd == "VAL") {
-
-            for (int i=0; i < number; i++) {
-                cin >> carta;
-                cout << carta << endl;
-            }
-
-            cin >> cmd;
-
         } else if (cmd == "DEA") {
 
             for (int i=0; i < number; i++) {
+                string carta;
                 cin >> carta;
-                cout << carta << endl;
                 enqueue(array_ponteiros[i], carta);
             }
 
             cin >> cmd;
 
-        }
-    }
+        } else if (cmd == "PRT") {
+            int index;
+            cin >> index;
+            printa_fila(array_ponteiros[index]);
 
-    for (int i=0; i < number; i++) {
-        cout << sizeof(*array_ponteiros[i]) / 8 << endl;
-        printa_fila(array_ponteiros[i]);
+            cin >> cmd;
+        }
     }
 
     return 0;
