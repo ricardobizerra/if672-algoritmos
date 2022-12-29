@@ -1,24 +1,28 @@
 #include <iostream>
 using namespace std;
 
+// estrutura que implementa o nó da fila
 struct node_fila {
     string carta_fila;
     node_fila *next;
     node_fila(string carta_fila): carta_fila(carta_fila), next(NULL) {}
 };
 
+// estrutura da fila
 struct fila {
     node_fila *head;
     node_fila *tail;
 
-    fila(): head(NULL), tail(NULL) {}
+    fila(): head(NULL), tail(NULL) {} // fila vazia, no início
 
 };
 
+// enfileirar
 void enqueue(fila *arr, string carta_fila){
     node_fila *new_node = new node_fila(carta_fila);
 
     if (arr->tail == NULL) {
+        // fila vazia
         arr->head = new_node;
         arr->tail = new_node;
     } else {
@@ -27,6 +31,7 @@ void enqueue(fila *arr, string carta_fila){
     }
 }
 
+// printa fila
 void printa_fila(fila *arr){
     node_fila *cur = arr->head;
     if (cur == NULL) {
@@ -45,6 +50,7 @@ int main()
     int number;
     cin >> number;
 
+    // array de number ponteiros, onde cada ponteiro apontará para uma mão de cartas de um jogador
     fila *array_ponteiros[number];
 
     for (int i=0; i < number; i++) {
