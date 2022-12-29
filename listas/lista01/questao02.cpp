@@ -1,12 +1,14 @@
 #include <iostream>
 using namespace std;
 
+// estrutura que implementa o nó
 struct node_struct {
     string carta_fila;
     node_struct *next;
     node_struct(string carta_fila): carta_fila(carta_fila), next(NULL) {}
 };
 
+// estrutura da fila
 struct fila {
     node_struct *head;
     node_struct *tail;
@@ -15,10 +17,12 @@ struct fila {
 
 };
 
+// enfileirar
 void enqueue(fila *arr, string carta_fila){
     node_struct *new_node = new node_struct(carta_fila);
 
     if (arr->tail == NULL) {
+        // fila vazia
         arr->head = new_node;
         arr->tail = new_node;
     } else {
@@ -27,6 +31,7 @@ void enqueue(fila *arr, string carta_fila){
     }
 }
 
+// desenfileirar
 string dequeue(fila *arr){
     string v = arr->head->carta_fila;
 
@@ -37,6 +42,7 @@ string dequeue(fila *arr){
     return v;
 }
 
+// printa fila
 void printa_fila(fila *arr){
     node_struct *cur = arr->head;
     if (cur == NULL) {
@@ -50,6 +56,7 @@ void printa_fila(fila *arr){
     }
 }
 
+// estrutura da pilha
 struct pilha {
     node_struct *top;
     node_struct *aux_bottom;
@@ -57,10 +64,12 @@ struct pilha {
     pilha(): top(NULL), aux_bottom(NULL) {}
 };
 
+// empilhar
 void stack_push(pilha *arr, string carta_fila) {
     node_struct *new_node = new node_struct(carta_fila);
 
     if (arr->top == NULL){
+        // pilha vazia
         arr->top = new_node;
         arr->top->next = new_node->next;
         arr->aux_bottom = arr->top;
@@ -72,6 +81,7 @@ void stack_push(pilha *arr, string carta_fila) {
     
 }
 
+// printa pilha
 void printa_pilha(pilha *arr){
     node_struct *cur = arr->top;
     if (cur == NULL) {
@@ -85,9 +95,10 @@ void printa_pilha(pilha *arr){
     }
 }
 
+// decidir vencedor de uma rodada
 int vencedor_rodada(pilha *arr, int num_jogadores){
     node_struct *cur = arr->top;
-    int num_jogador = num_jogadores - 1;
+    int num_jogador = num_jogadores - 1; // id do jogador que está sendo analisado
     
     string naipe_carta_vencedor = "";
     string num_carta_vencedor = "";
@@ -97,6 +108,7 @@ int vencedor_rodada(pilha *arr, int num_jogadores){
     while (cur != NULL) {
         string carta_jogador = cur->carta_fila;
         
+        // separa letra e número da carta para comparação
         string naipe_carta = carta_jogador.substr(0,1);
         string num_carta = carta_jogador.substr(1,2);
         
@@ -117,7 +129,7 @@ int vencedor_rodada(pilha *arr, int num_jogadores){
                 num_vencedor = num_jogador;
                 
             } else if (num_carta == num_carta_vencedor) {
-                
+                // condição de empate
                 empate = true;
                 
             }
@@ -137,6 +149,7 @@ int main()
     int number;
     cin >> number;
 
+    // array de number ponteiros, onde cada ponteiro apontará para uma mão de cartas de um jogador
     fila *array_ponteiros[number];
 
     for (int i=0; i < number; i++) {
@@ -154,6 +167,7 @@ int main()
     
     int num_rodadas = -1;
     
+    // inicializador da pilha
     pilha *pilha_rodada;
     pilha_rodada = NULL;
 
@@ -177,6 +191,7 @@ int main()
             num_rodadas++;
             pilha_rodada = new pilha();
             
+            // desenfileira primeira carta de cada jogador e empilha na pilha
             for (int i=0; i < number; i++) {
                 string carta_para_empilhar = dequeue(array_ponteiros[i]);
                 stack_push(pilha_rodada, carta_para_empilhar);
