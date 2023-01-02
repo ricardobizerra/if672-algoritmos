@@ -143,31 +143,24 @@ int tamanho_pilha(pilha *arr) {
 // decidir vencedor de uma rodada
 int vencedor_rodada(pilha *arr, pilha *pilha_auxiliar, int num_jogadores, fila **arr_fila){
     int jogador_sem_carta = 0;
-    //fila *jogadores_sem_carta;
     bool *cards_dequeued = new bool[num_jogadores];
-    //card_dequeued = NULL;
     
     for (int i=0; i<num_jogadores; i++){
         cards_dequeued[i] = false;
     }
-    //node_struct *cur_value = card_dequeued->head;
+    
     // desenfileira primeira carta de cada jogador e empilha na pilha
     for (int i=0; i < num_jogadores; i++) {
         
         if (tamanho_fila(arr_fila[i]) != 0) {
-            //cur_value->carta_fila = "true";
             cards_dequeued[i] = true;
             string carta_para_empilhar = dequeue(arr_fila[i]);
             stack_push(pilha_auxiliar, carta_para_empilhar);
             if (tamanho_fila(arr_fila[i]) != 0) stack_push(arr, carta_para_empilhar);
         } else {
-            //cur_value->carta_fila = "false";
             cards_dequeued[i] = false;
             jogador_sem_carta++;
-            //enqueue(jogadores_sem_carta, i);
         }
-        
-        //cur_value = cur_value->next;
         
     }
     
@@ -179,19 +172,10 @@ int vencedor_rodada(pilha *arr, pilha *pilha_auxiliar, int num_jogadores, fila *
     int num_vencedor = 0;
     
     bool empate = false;
-    //cout<<"------------------------------" <<endl;
+    
     for(int i=num_jogador; i>=0; i--) {
-        /*node_struct *cur_value_dequeued = card_dequeued->head;
-        int tentativa = 0;
-        string valor_carta_dequeued = "";
-        cout<<num_jogador-i<<endl;*/
-        
         
         if(cards_dequeued[i] == true){
-            /*cout<<"entrou "<<i<<" com tamanho "<<tamanho_fila(arr_fila[i])<<" e fila ";
-            printa_fila(arr_fila[i]);
-            
-            printa_pilha(pilha_auxiliar);*/
             
             string carta_jogador = cur->carta_fila;
             
@@ -199,7 +183,6 @@ int vencedor_rodada(pilha *arr, pilha *pilha_auxiliar, int num_jogadores, fila *
             string naipe_carta = carta_jogador.substr(0,1);
             string num_carta = carta_jogador.substr(1,2);
             
-            //cout<<"(" << naipe_carta << " contra " << naipe_carta_vencedor<<")" <<endl;
             if (naipe_carta > naipe_carta_vencedor) {
                 empate = false;
                 naipe_carta_vencedor = naipe_carta;
@@ -207,15 +190,14 @@ int vencedor_rodada(pilha *arr, pilha *pilha_auxiliar, int num_jogadores, fila *
                 num_vencedor = i;
                 
             } else if (naipe_carta == naipe_carta_vencedor) {
-                /*cout<<"("<<num_carta<<" contra "<<num_carta_vencedor<<")"<<endl;
-                cout<<(num_carta<num_carta_vencedor)<<endl;*/
+                
                 if (num_carta > num_carta_vencedor) {
                     
                     empate = false;
                     naipe_carta_vencedor = naipe_carta;
                     num_carta_vencedor = num_carta;
                     num_vencedor = i;
-                    //cout<<"num_vencedor: "<<num_carta_vencedor<<endl;
+                    
                 } else if (num_carta == num_carta_vencedor) {
                     // condição de empate
                     empate = true;
@@ -225,11 +207,7 @@ int vencedor_rodada(pilha *arr, pilha *pilha_auxiliar, int num_jogadores, fila *
             }
             
             cur = cur->next;
-        }else{
-            //cout<<"não entrou "<<num_jogador<<" com tamanho "<<tamanho_fila(arr_fila[num_jogador])<<endl;
-            //string valor_retirado = stack_pop(arr);
         }
-        //num_jogador--;
     }
     
     if (empate == false) return num_vencedor;
@@ -321,29 +299,11 @@ int main()
             
             int vencedor = -1;
             bool rodada_empatada = false;
-            //int pilha_tamanho=0;
             
-            do {/*
-                int jogador_sem_carta = 0;
-                //fila *jogadores_sem_carta;
-                
-                // desenfileira primeira carta de cada jogador e empilha na pilha
-                for (int i=0; i < number; i++) {
-                    if (jogador_sem_carta == number) rodada_empatada == true;
-                    if (tamanho_fila(array_ponteiros[i]) != 0) {
-                        string carta_para_empilhar = dequeue(array_ponteiros[i]);
-                        stack_push(pilha_auxiliar, carta_para_empilhar);
-                        if (tamanho_fila(array_ponteiros[i]) != 0) stack_push(pilha_rodada, carta_para_empilhar);
-                    } else {
-                        jogador_sem_carta++;
-                        //enqueue(jogadores_sem_carta, i);
-                    }
-                    
-                }
-                */
+            do {
                 vencedor = vencedor_rodada(pilha_rodada, pilha_auxiliar, number, array_ponteiros);
                 
-            } while (vencedor == -1 /*&& rodada_empatada == false*/);
+            } while (vencedor == -1);
             
             int pilha_tamanho = tamanho_pilha(pilha_auxiliar);
             
