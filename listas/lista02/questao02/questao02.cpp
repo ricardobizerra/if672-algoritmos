@@ -27,9 +27,8 @@ struct array {
     node **array_elementos;
     int tamanho_array;
     int capacidade;
-	node *next;
 
-    array(int capacidade = 1): array_elementos(new node*[capacidade]), tamanho_array(0), capacidade(capacidade), next(NULL) {}
+    array(int capacidade = 1): array_elementos(new node*[capacidade]), tamanho_array(0), capacidade(capacidade) {}
 
     // desestruturação
     ~array() {
@@ -66,34 +65,6 @@ struct array {
 		node *new_node = new node(timestamp, client);
 		adicionar(new_node);
 	}
-
-	int binary_search(node *node_procurado) {
-		int posicao = -1;
-
-		int l = 0;
-		int r = tamanho_array - 1;
-
-		while (l <= r) {
-			int m = (l + r) / 2;
-
-			node *cur = array_elementos[m];
-
-			if (cur->timestamp == node_procurado->timestamp) {
-				posicao = m;
-				break;
-			} else if (cur->timestamp < node_procurado->timestamp) {
-				l = m + 1;
-			} else {
-				r = m - 1;
-			}
-
-			if (l >= tamanho_array || r < 0 || l > r) {
-				break;
-			}
-		}
-
-		return posicao;
-	}
 };
 
 struct hash_table {
@@ -106,12 +77,19 @@ struct hash_table {
 		table = new array *[m]();
 	};
 
+	~hash_table() {
+		for (int i = 0; i < m; i++) {
+			delete table[i];
+		}
+		delete[] table;
+	}
+
 	// h(T) = T mod m
 	int node_key(int timestamp) {
 		return (timestamp % m);
 	}
 
-	void insercao(int timestamp, u_int32_t client, input_new &retorno, array *elementos) {
+	void insercao(int timestamp, u_int32_t client, input_new &retorno, array &elementos) {
 	    int return_i = -1;
 		int return_s = -1;
 		
@@ -141,13 +119,13 @@ struct hash_table {
 		retorno.s = return_s;
 	}
 
-	void rehashing(array *elementos) {
+	void rehashing(array &elementos) {
 		int novo_tamanho = (2 * m) + 1;
 
 		array **nova_table = new array *[novo_tamanho];
 
-		for (int index = 0; index < (elementos->tamanho_array); index++) {
-			node *cur = elementos->array_elementos[index];
+		for (int index = 0; index < (elementos.tamanho_array); index++) {
+			node *cur = elementos.array_elementos[index];
 			int novo_valor_hash_node = (cur->timestamp) % novo_tamanho;
 
 			if (!nova_table[novo_valor_hash_node]) {
@@ -170,14 +148,36 @@ struct hash_table {
         if (cur == NULL) {
     	    return;
         } else {
-    		for (int i=0; i < cur->tamanho_array; i++) {
+    		/*for (int i=0; i < cur->tamanho_array; i++) {
     			if (cur->array_elementos[i]->timestamp == timestamp) {
     				return_c = cur->array_elementos[i]->client;
     				return_j = i;
     				break;
     			}
-    		}
+    		}*/
             
+			int l = 0;
+			int r = cur->tamanho_array - 1;
+
+			while (l <= r) {
+				int m = (l + r) / 2;
+
+				node *ponteiro = cur->array_elementos[m];
+
+				if (ponteiro->timestamp == timestamp) {
+					return_c = ponteiro->client;
+					return_j = m;
+					break;
+				} else if (ponteiro->timestamp < timestamp) {
+					l = m + 1;
+				} else {
+					r = m - 1;
+				}
+
+				if (l >= cur->tamanho_array || r < 0 || l > r) {
+					break;
+				}				
+			}
         }
 
 		retorno.c = return_c;
@@ -205,7 +205,7 @@ int main() {
     int timestamp_qry;
 
 	// array ordenado de registro dos elementos que serão inseridos
-	array *elementos = new array();
+	array elementos(1);
 
 	while (cmd != "END") {
 
@@ -218,7 +218,7 @@ int main() {
 
 			input_new retorno_new(-1, -1);
 			table_timestamps.insercao(timestamp, client, retorno_new, elementos);
-			elementos->enqueue(timestamp, client);
+			elementos.enqueue(timestamp, client);
 
 			cout << retorno_new.i << " " << retorno_new.s << endl;
 
