@@ -28,9 +28,8 @@ int main() {
     leftChild->left = leftGrandchild;
     rightChild->right = rightGrandchild;
 
-    // cálculo da altura
+    // retorna ponteiro para nó com valor 4, se existir, ou NULL
     node *search = bst_search(root, 4);
-
     cout << search->value << endl;
 
     return 0;
