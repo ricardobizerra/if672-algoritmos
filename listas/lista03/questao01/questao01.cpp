@@ -117,6 +117,7 @@ node* rotate_left(node *root) {
     node *R = root->right;
     node *RL = root->right->left;
     R->left = root;
+    R->left->right = RL;
     root->right = RL;
     if (root->parent != NULL) root->parent->right = R;
 
@@ -133,6 +134,7 @@ node* rotate_right(node *root) {
     node *L = root->left;
     node *LR = root->left->right;
     L->right = root;
+    L->right->left = LR;
     root->left = LR;
     if (root->parent != NULL) root->parent->left = L;
 
