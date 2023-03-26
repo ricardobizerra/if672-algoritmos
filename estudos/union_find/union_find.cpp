@@ -21,6 +21,21 @@ node* find_pathcompression(node *x) {
     return x->parent;
 }
 
+void merge(node *x, node *y) {
+    node *root_x = find_pathcompression(x);
+    node *root_y = find_pathcompression(y);
+    if (root_x != root_y) {
+        if (root_x->depth < root_y->depth) swap(root_x, root_y);
+        root_y->parent = root_x;
+        if (root_x->depth == root_y->depth) root_x->depth++;
+    }
+}
+
+int connected(node *x, node *y) {
+    if (find_pathcompression(x) == find_pathcompression(y)) return 1;
+    else return 0;
+}
+
 int main() {
     return 0;
 }
